@@ -9,7 +9,7 @@
 
     <style>
         body {
-            background: red;
+            background: yellow;
         }
     </style>
 </head>
@@ -20,12 +20,13 @@
 
 // Use setInterval with jQuery for changing the background color
 setInterval(function() {
-  $('body').css('background-color', 'blue');
-}, 1000);
-
-setInterval(function() {
-  $('body').css('background-color', 'red');
+    if($('body').css('background-color') == 'blue') {
+        $('body').css('background-color', 'red');
+    } else {
+        $('body').css('background-color', 'blue');
+    }
 }, 3000);
+
     </script>
 </body>
 </html>
