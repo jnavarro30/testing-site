@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Testing Site</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+
     <style>
         body {
             background: red;
@@ -14,14 +17,15 @@
     <h1>Testing Site</h1>
     <h2>Testing if Javascript Works</h2>
     <script>
-        let headerContent = document.querySelector('h1').textContent;
-        document.querySelector('h1').textContent = headerContent.toUpperCase();
-        setInterval(() => { 
-            document.querySelector('body').style.backgroundColor = "blue";
-        }, 1000);
-        setInterval(() => { 
-            document.querySelector('body').style.backgroundColor = "red";
-        }, 2000);
+
+// Use setInterval with jQuery for changing the background color
+setInterval(function() {
+  $('body').css('background-color', 'blue');
+}, 1000);
+
+setInterval(function() {
+  $('body').css('background-color', 'red');
+}, 2000);
     </script>
 </body>
 </html>
