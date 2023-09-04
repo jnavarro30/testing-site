@@ -20,12 +20,13 @@
 
 // Use setInterval with jQuery for changing the background color
 setInterval(function() {
-    if($('body').css('background-color') == 'blue') {
+    console.log($('body').css('background-color'))
+    if($('body').css('background-color') == 'rgb(0, 0, 255)') {
         $('body').css('background-color', 'red');
     } else {
         $('body').css('background-color', 'blue');
     }
-}, 3000);
+}, 2000);
 
     </script>
 </body>
