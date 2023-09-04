@@ -8,5 +8,5 @@
 //   }
 // }, 2000);
 
-
+$("#accordion").accordion();
 $("#datepicker").datepicker();
