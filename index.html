@@ -13,16 +13,6 @@
   <body>
     <h1>Testing Site</h1>
     <h2>Testing if Javascript Works</h2>
-    <script>
-      let headerContent = document.querySelector("h1").textContent;
-      document.querySelector("h1").textContent = headerContent.toUpperCase();
-      setInterval(() => {
-        if (document.querySelector("body").style.backgroundColor == "blue") {
-          document.querySelector("body").style.backgroundColor = "green";
-        } else {
-          document.querySelector("body").style.backgroundColor = "blue";
-        }
-      }, 2000);
-    </script>
+    <script src="./app.js"></script>
   </body>
 </html>
