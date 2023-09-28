@@ -3,12 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>Digital Signage - Independa</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://momentjs.com/downloads/moment-timezone-with-data.min.js"></script>
-
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
@@ -17,19 +15,7 @@
 
   <body class="no-scrollbar">
     <div id="app">
-      <div
-        id="continued-text"
-        class="is-size-1-fullhd is-size-3"
-        style="
-          padding-left: 20px;
-          padding-right: 20px;
-          position: absolute;
-          bottom: 1%;
-          right: 11%;
-          color: rgb(12, 12, 12);
-          border-radius: 10px;
-        "
-      ></div>
+      <div id="continued-text" class="is-size-1-fullhd is-size-3"></div>
       <div id="loading-overlay">
         <div class="loading_logo">
           <div>
@@ -51,10 +37,7 @@
         id="slideshow"
         class="title is-3 has-text-white is-flex is-justify-content-center m-0"
       ></ul>
-      <div
-        class="bottom-container"
-        style="width: 100%; position: absolute; left: 0; right: 0; bottom: 0"
-      >
+      <div class="bottom-container">
         <div
           style="width: 100%"
           id="status_bar"
@@ -72,49 +55,19 @@
             <span id="weather_degree" class="pl-2"></span>
           </div>
           <div
-            style="background-color: #000000c1"
             id="slide-number"
             class="custom-bottom-bg slide-number has-text-centered mt-1 is-size-4-fullhd is-size-6"
           ></div>
           <div
-            style="background-color: #000000c1"
             class="custom-bottom-bg has-text-right is-size-3-fullhd is-size-5"
           >
             <div id="current-time"></div>
           </div>
-          <audio id="background-audio" autoplay loop>
-            <!-- <source id="audio-source" type="audio/mpeg" /> -->
+          <audio id="background-audio" type="audio/mp3" autoplay loop>
             Your browser does not support the audio element.
           </audio>
         </div>
       </div>
-      <!-- <div class="bottom-container">
-        <div
-          id="status_bar"
-          class="custom-fixed-bottom is-flex is-justify-content-space-between is-align-items-center has-text-white has-padding-0 m-0 is-size-2 has-text-weight-normal pb-2 px-2"
-        >
-          <div
-            class="custom-bottom-bg weather is-flex is-justify-content-left is-align-items-center"
-          >
-            <img
-              id="weather_image"
-              class="image is-48x48 is-rounded"
-              style="border-radius: 15px"
-            /><span id="weather_degree" class="pl-2"></span>
-          </div>
-          <div
-            id="slide-number"
-            class="custom-bottom-bg is-size-2 slide-number has-text-centered mt-1"
-          ></div>
-          <div class="custom-bottom-bg has-text-right">
-            <div id="current-time"></div>
-          </div>
-          <audio id="background-audio" autoplay loop>
-            <source id="audio-source" type="audio/mpeg" />
-            Your browser does not support the audio element.
-          </audio>
-        </div>
-      </div> -->
     </div>
 
     <style>
@@ -129,6 +82,16 @@
         width: 100%;
         background-color: black;
         color: white;
+      }
+
+      #continued-text {
+        padding-left: 20px;
+        padding-right: 20px;
+        position: absolute;
+        bottom: 1%;
+        right: 11%;
+        color: rgb(12, 12, 12);
+        border-radius: 10px;
       }
 
       #image_bar_left {
@@ -172,26 +135,20 @@
         height: 100%;
         display: flex;
         justify-content: center;
-        /* align-items: center; */
         color: white;
       }
 
       .slideshow-table {
         width: 100%;
-        /* height: 50px; */
-        /* margin-top: 20px; */
-        /* background-color: rgba(0, 0, 0, 0); */
-        /* padding: 10px; */
-        /* border-radius: 15px; */
       }
 
       .bottom-container {
-        /* background-color: rgba(0, 0, 0, 0.6); */
         position: absolute;
-        bottom: 5px;
-        left: 10%;
-        width: 80%;
+        left: 0;
+        right: 0;
+        bottom: 0;
         border-radius: 10px;
+        width: 100%;
       }
 
       th {
@@ -200,54 +157,26 @@
 
       tr:nth-child(odd) {
         background: #aed9e6;
-        /* border: 1px solid */
       }
 
-      /* tr:nth-child(even) {
-        border: 1px solid
-      } */
-
       /*** custom classes I won't touch ***/
-
       .custom-fixed-bottom {
-        /* left: 50%;
-    transform: translate(-50%, 0); */
         margin-left: auto;
         margin-right: auto;
         bottom: 150px;
         width: 80vw;
         border-radius: 20px;
         text-align: center;
-        /* background-color: #0b0b0b6a; */
       }
 
       .custom-bottom-bg {
-        /* background-color:#1f1f1fdb ; */
+        background-color: #000000c1;
         padding: 5px 20px;
         border-radius: 15px;
       }
 
-      .custom-bg {
-        width: 100%;
-        /* height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    color: white; */
-        background-color: #000000d3;
-      }
-
-      .has-text-orange {
-        color: orange;
-      }
-
       .table-header-border-color {
         border-bottom: 1px solid #805831;
-      }
-
-      .is-size-big {
-        font-size: 3.8rem;
       }
 
       .slide-images {
@@ -259,26 +188,6 @@
       td {
         padding: 10px 0;
       }
-
-      .table-padding {
-        /* padding-top: 4rem;
-        padding-bottom: 4rem; */
-      }
-
-      @media (max-width: 1280px) {
-        .table-padding {
-          /* padding-top: 3rem; */
-          /* padding-bottom: 3rem; */
-        }
-      }
-
-      /* .slideshow-table tbody tr td { */
-      /* height: calc(100vh / 5); */
-      /* align-items: center; */
-      /* display: flex; */
-      /* align-items: center; Vertical centering */
-      /* justify-content: center;  */
-      /* } */
     </style>
 
     <script>
@@ -289,29 +198,14 @@
 
       // api call
       $(document).ready(function () {
-        // base_url
         var base_url = "https://api-v2.independa.com/";
-        // var base_url = "http://localhost:4000/";
 
         // api call for device id
         var device_token_url = base_url + "users/device-token";
-
         var allEvents = [];
-
         var splicedEvents = [];
 
-        // harcoded device_uid for test phase
-        // var queryParams = {
-        //   // for zero events
-        //   // device_uid: "MS0206017360394",
-        //   // for multiple events
-        //   device_uid: "MS0206017360076",
-        //   // for single event
-        //   // device_uid:"MS0206020500207 "
-        // };
-
         // Getting the device_uid from the URL
-
         function getQueryParams(url) {
           var queryParams = {};
           var parts = url.slice(url.indexOf("?") + 1).split("&");
@@ -320,10 +214,8 @@
             var param = parts[i].split("=");
             var key = decodeURIComponent(param[0]);
             var value = decodeURIComponent(param[1]);
-
             queryParams[key] = value;
           }
-
           return queryParams;
         }
 
@@ -336,19 +228,14 @@
           displaydata();
         } else {
           console.log("device_uid not present in the URL");
-          $("#image_bar_left").remove();
-          $("#image_bar_right").remove();
+          $("#image_bar_left, #image_bar_right").remove();
         }
 
-        // functions
-
         function displaydata() {
-          // Use device_uid in your code
           console.log("device_uid:", device_uid);
           queryParams.device_uid = device_uid;
 
           $.get(device_token_url, queryParams, function (output) {
-            console.log(output);
             var headers = {
               token: output.token,
             };
@@ -363,15 +250,10 @@
               dataType: "json",
               success: function (data, status, xhr) {
                 console.log(data);
-                console.log(data.group_id);
-                console.log(data.location_id);
-                console.log(data.is_digital_signage);
-                console.log(data.is_activated);
+                // console.log(data.is_digital_signage);
+                // console.log(data.is_activated);
                 // screensaver or not, false = screensaver
-                if (
-                  data.is_digital_signage == true &&
-                  data.is_activated == true
-                ) {
+                if (data.is_digital_signage && data.is_activated) {
                   var canvas = $("#myCanvas");
                   canvas.remove();
 
@@ -380,18 +262,13 @@
                     location: data.location_id,
                     device_uid: data.device_uid,
                   };
-
-                  // updateAudioSource();
-                  console.log(data.audio_url);
+                  // audio source
                   $("#background-audio").attr("src", data.audio_url);
                   display_inner_data();
                 } else {
                   // Get the canvas element by its ID
                   canvas = document.getElementById("myCanvas");
-                  $("#image_bar_left").remove();
-                  $("#image_bar_right").remove();
-                  // bottom bar
-                  $("#status_bar").remove();
+                  $("#image_bar_left, #image_bar_right, #status_bar").remove();
 
                   if (canvas && canvas.getContext) {
                     canvas_data();
@@ -435,7 +312,6 @@
 
                       draw();
                     }
-
                     animationIntervalId = setInterval(myAnimation, 20); // Assign a value to animationIntervalId
                   }
                 }
@@ -453,16 +329,15 @@
                         "storedEvents",
                         JSON.stringify(data_inner.events)
                       );
-
-                      console.log(
-                        "allEvents",
-                        JSON.parse(localStorage.storedEvents)
-                      );
+                      // console.log(
+                      //   "allEvents",
+                      //   JSON.parse(localStorage.storedEvents)
+                      // );
                       function logos() {
                         if (data_inner.calendar_settings.length > 0) {
-                          console.log(
-                            data_inner.calendar_settings[0].logo_image_url
-                          );
+                          // console.log(
+                          //   data_inner.calendar_settings[0].logo_image_url
+                          // );
                           var leftImageUrl =
                             data_inner.calendar_settings[0].logo_image_url;
                           var img_loc = $(
@@ -473,18 +348,15 @@
                           var rightImageUrl =
                             data_inner.calendar_settings[0].month_image_url;
                           var img_mon = $().attr("src", rightImageUrl);
-                          // "<img style='border-radius: 0 0 0 20px; max-width: 100px; max-height: 100px'>"
                           $("#image_bar_right").empty().append(img_mon);
                         } else {
-                          $("#image_bar_left").remove();
-                          $("#image_bar_right").remove();
+                          $("#image_bar_left, #image_bar_right").remove();
                           console.log("no calender_settings detected");
                         }
                       }
                       // for the logos
                       logos();
                       // for tables
-
                       var slideIndex = 0;
                       // var slideIndex = 13
                       var slideData = [];
@@ -499,9 +371,7 @@
                           }
                         }
                       }
-                      // console.log(data_inner.events.length);
                       if (data_inner.events.length > 0) {
-                        // console.log('data_inner.events', data_inner.events);
                         if (data_inner.events.length > 10) {
                           for (var j = 0; j < 2; j += 1) {
                             html_table_data();
@@ -514,17 +384,13 @@
                       }
 
                       function renderSlide(index) {
-                        // newData = data_inner.events.slice(0)
-                        // console.log('storedEvents', JSON.parse(localStorage.getItem('storedEvents')));
                         var slideshow = $("#slideshow");
                         slideshow.empty();
                         if (index >= 0 && slideData.length) {
                           displayTable();
                         }
                         function displayTable() {
-                          // console.log('index', index);
                           var slide = slideData[index];
-                          // console.log('data_inner', data_inner.medias);
                           if (slide.type === "html") {
                             insert_table_row();
                           } else {
@@ -537,22 +403,15 @@
                             } else if (
                               data_inner.medias[index].type === "document"
                             ) {
-                              // google slide
-
-                              // var slide_test = 'https://docs.google.com/presentation/d/e/2PACX-1vTpkkn0yFgGZCurkVeNnnNfpMQbEsVqmMWRsrFLtMYh5PTckAJKtOtRXJzJM714YkiKq4nNCqdY9o_D/embed?start=true&loop=false&delayms=3000'
-
-                              // var slideWithParam = slide + '&rm=minimal';
                               var slideWithParam = slide + "?rm=minimal";
-                              // console.log(slideWithParam);
                               var doc = $(
                                 '<iframe width="100%" height="100%" frameborder="0"  allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>'
                               ).attr("src", slideWithParam);
                               slideshow.append(doc);
                             } else {
-                              var unsupported_content_message = $(
-                                "<p> Unsupported media content <p/>"
+                              slideshow.append(
+                                $("<p> Unsupported media content <p/>")
                               );
-                              slideshow.append(unsupported_content_message);
                             }
                           }
 
@@ -563,7 +422,6 @@
                             );
 
                             var tableBody = $("#table-body");
-
                             // Clear existing rows
                             tableBody.empty();
 
@@ -575,18 +433,13 @@
                               splicedEvents = allEvents.splice(0, 10);
                               splicedEvents.forEach(function (event) {
                                 var row = $("<tr>");
-                                // row.addClass("is-size-2");
                                 row.append(
                                   $(
                                     "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3 has-text-weight-normal'>"
-                                  ).text(event.event_time)
-                                );
-                                row.append(
+                                  ).text(event.event_time),
                                   $(
                                     "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3'>"
-                                  ).text(event.title)
-                                );
-                                row.append(
+                                  ).text(event.title),
                                   $(
                                     "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3 has-text-weight-normal'>"
                                   ).text(event.location)
@@ -602,14 +455,10 @@
                                 row.append(
                                   $(
                                     "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3 is-size-4 has-text-weight-bold'>"
-                                  ).text(event.event_time)
-                                );
-                                row.append(
+                                  ).text(event.event_time),
                                   $(
                                     "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3 is-size-4 has-text-weight-bold'>"
-                                  ).text(event.title)
-                                );
-                                row.append(
+                                  ).text(event.title),
                                   $(
                                     "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3 is-size-4 has-text-weight-bold'>"
                                   ).text(event.location)
@@ -619,7 +468,6 @@
 
                               // Calculate the number of empty rows to add
                               var numRowsToAdd = 10 - allEvents.length;
-                              // Add empty rows
                               for (var i = 0; i < numRowsToAdd; i++) {
                                 var emptyRow = $(
                                   "<tr style='background: #fff;'>"
@@ -627,14 +475,10 @@
                                 emptyRow.append(
                                   $(
                                     "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3 has-text-weight-normal'>"
-                                  ).text("")
-                                );
-                                emptyRow.append(
+                                  ).text(""),
                                   $(
                                     "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3'>"
-                                  ).text("")
-                                );
-                                emptyRow.append(
+                                  ).text(""),
                                   $(
                                     "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3 has-text-weight-normal'>"
                                   ).text("")
@@ -652,8 +496,6 @@
                               }
                             }
                           }
-
-                          // slide number
                           $("#slide-number").text(
                             index + 1 + "/" + slideData.length
                           );
@@ -665,13 +507,11 @@
                           data_inner.medias.length > 0 ||
                           slideData.length > 1
                         ) {
-                          console.log();
                           slideIndex += 1;
                           if (slideIndex >= slideData.length) {
                             slideIndex = 0;
                           }
                           renderSlide(slideIndex);
-
                           // Update the date immediately after changing the slide
                           updateAndStoreDate();
                         }
@@ -688,7 +528,6 @@
                           type: "html",
                           content:
                             '<div class="overlay" style="background-color: white">' +
-                            // '<img id="bg-image" class="is-fullheight" src= "https://independa.s3.amazonaws.com/independa-static/media/image/jpeg/2023-09/f2a2602a85c2fabb93fe205fec2a3696be9ec06e435c8e570fd5c46db3bb168f.jpg"/>' +
                             '   <div id="main-container" style="position: absolute; top: 0; margin-top: 1%">' +
                             '       <div class="has-text-weight-bold is-size-2-fullhd is-size-4 has-text-black">' +
                             '           <div class="has-text-centered">Today\'s Activities</div>' +
@@ -716,51 +555,27 @@
                 }
               },
               error: function (xhr, status, error) {
-                console.log(xhr.responseText);
-                console.log(error);
-                console.log(status);
+                console.log(xhr.responseText, error, status);
               },
             });
           });
         }
 
-        // dynamic audio
-
-        // code after getting device_uid place it in line number 142 after if(device_uid)
-        // for audio
-
-        // time
         function updateCurrentTime() {
-          // var currentTime = dayjs().format("h:mm A");
-          // var currentDay = dayjs().format("dddd");
-
-          // var currentTime = moment().tz("America/Los_Angeles").format("h:mm A");
-          // var currentDay = moment().tz("America/Los_Angeles").format("dddd");
-
-          var currentTime = moment().tz(moment.tz.guess()).format("h:mm A");
-          var currentDay = moment().tz(moment.tz.guess()).format("dddd");
-
-          $("#current-time").text(currentTime);
-          $("#currentDay").text(currentDay);
+          $("#current-time").text(
+            moment().tz(moment.tz.guess()).format("h:mm A")
+          );
+          $("#currentDay").text(moment().tz(moment.tz.guess()).format("dddd"));
         }
 
-        updateCurrentTime();
+        // updateCurrentTime();
         setInterval(updateCurrentTime, 1000);
-
-        // setInterval(updateCurrentDate,1000)
-        // Weather API
 
         var weatherAPIKey = "cc78d71bff884253a0e200608171206";
 
         function getWeather() {
-          // Check if weather data is already in cache
           var cachedData = localStorage.getItem("weatherData");
-          // var currentTime = new Date().getTime();
-          // console.log(currentTime);
-
-          // var currentTime = dayjs().valueOf(); // Get current time using dayjs
           var currentTime = moment().valueOf(); // Get current time using dayjs
-          // console.log(currentTime);
 
           if (JSON.parse(cachedData)) {
             var cachedTime = parseInt(localStorage.getItem("weatherDataTime"));
@@ -783,7 +598,6 @@
                 q: 92018,
               },
               success: function (data) {
-                console.log(data);
                 updateWeatherUI(data);
 
                 // Cache the data and current time
@@ -823,38 +637,11 @@
         // Schedule a page reload after 5 minutes
         setTimeout(reloadPage, 300000);
 
-        // Function to update the current date and store it in localStorage
-        // function updateAndStoreDate() {
-        //   try {
-        //     var currentDate = dayjs().format("dddd, MMMM DD, YYYY");
-        //     $("#currentDate").text(currentDate);
-
-        //     // Store the current date in localStorage
-        //     localStorage.setItem("currentDate", currentDate);
-        //   } catch (error) {
-        //     console.error("Error updating and storing current date:", error);
-        //   }
-        // }
-
-        // Function to update the current date and store it in localStorage
-        // function updateAndStoreDate() {
-        //   try {
-        //     var currentDate = dayjs().format("dddd, MMMM DD, YYYY");
-        //     $("#currentDate").text(currentDate);
-
-        //     // Store the current date in localStorage
-        //     localStorage.setItem("currentDate", currentDate);
-        //   } catch (error) {
-        //     console.error("Error updating and storing current date:", error);
-        //   }
-        // }
-
         // Function to retrieve and display the stored date from localStorage
         function updateAndStoreDate() {
           try {
-            // var currentDate = dayjs().format("dddd, MMMM DD, YYYY");
             var currentDate = moment()
-              .tz("America/Los_Angeles")
+              .tz(moment.tz.guess())
               .format("dddd, MMMM DD, YYYY");
             $("#currentDate").text(currentDate);
 
