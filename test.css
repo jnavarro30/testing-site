@@ -1,0 +1,100 @@
+html, body {
+  height: 100%;
+  border: 5px solid pink;
+}
+
+#app {
+  /* position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0; */
+        height: 100%;
+        background-color: black;
+        color: white;
+        /* display: flex;
+        justify-content: center;
+        place-items: center; */
+}
+
+#slideshow {
+    /* border: 2px solid purple; */
+    height: 100%;
+  }
+  .overlay {
+    /* border: 5px solid blue; */
+    /* height: 100vh; */
+    /* background: url("https://independa.s3.amazonaws.com/independa-static/media/image/jpeg/2023-09/f2a2602a85c2fabb93fe205fec2a3696be9ec06e435c8e570fd5c46db3bb168f.jpg");
+    object-fit: cover;
+    background-repeat: no-repeat; */
+    /* position: fixed; */
+    /* padding: 0;
+    margin: 0; */
+    /* width: 100%; */
+    border: 2px solid green;
+    height: 100%;
+  }
+  #bg-image {
+    /* position: fixed; */
+    /* object-fit: contain; */
+    /* background-repeat: no-repeat; */
+    /* z-index: 0;
+    opacity: 0.2;
+    left: 0;
+    top: 0; */
+    opacity: 0.2;
+    height: 100%;
+    width: 100%;
+  }
+
+  #main-container {
+    /* border: 2px solid red; */
+    /* width: 100%; */
+    /* class="p-5 custom-bg custom-full-height" */
+    /* position: absolute; */
+    top: 10%;
+    width: 100%;
+    height: 80%;
+    border: 2px solid blue; 
+    position: absolute;
+  }
+  
+
+  .table-container {
+    border: 5px solid red;
+    padding: 10px;
+    /* overflow-x: hidden; */
+    width: 100%;
+    /* height: 80vh; */
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    color: white;
+  } 
+
+  .slideshow-table {
+    /* border: 20px solid red; */
+    /* position: fixed; */
+    width: 100%;
+    height: 50px;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: rgba(0, 0, 0, 0);
+    padding: 10px;
+    border-radius: 15px;
+  }
+
+  .bottom-container {
+    border: 20px solid yellow;
+    /* width: 100vw; */
+    position: absolute;
+    /* margin: auto; */
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    /* height: 146px; */
+    /* display: flex;
+    justify-content: center; */
+    /* z-index: 100; */
+  }

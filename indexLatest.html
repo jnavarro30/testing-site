@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Digital Signage - Independa</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.6/dayjs.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+</head>
+
+<body>
+  <div id="app">
+    <div id="loading-overlay">
+      <div class="loading_logo">
+        <div>
+          <img
+            src="https://independa.s3.amazonaws.com/independa-static/media/image/png/2023-09/ec0c5bed4a5a5f4cbb5f73525bda448f75f37ef62707efc21f27e58069bdc06b.png"
+            alt="independa" />
+        </div>
+      </div>
+      <div class="spinner"></div>
+    </div>
+
+    <div id="image_bar_left">
+    </div>
+    <div id="image_bar_right">
+    </div>
+    <canvas id="myCanvas" width="1920" height="1080">
+      <div></div>
+    </canvas>
+    <ul id="slideshow" class="title is-3 is-flex is-justify-content-center m-0">
+    </ul>
+    <div class="bottom-container">
+      <div id="weather">
+        <div class="custom-bottom-bg weather is-flex is-justify-content-left is-align-items-center">
+          <img id="weather_image" class="image is-48x48 is-rounded" style="border-radius: 15px" /><span
+            id="weather_degree" class="pl-2"></span>
+        </div>
+      </div>
+        <div id="slide-number" class="custom-bottom-bg is-size-2 slide-number has-text-centered mt-1"></div>
+      <div id="time">
+        <div class="custom-bottom-bg has-text-right">
+          <div id="current-time"></div>
+        </div>
+      </div>
+      <!-- <div id="status_bar"
+        class="custom-fixed-bottom is-flex is-justify-content-space-between is-align-items-center has-padding-0 m-0 is-size-2 has-text-weight-normal pb-2 px-2"
+        > -->
+        <!-- <div class="custom-bottom-bg weather is-flex is-justify-content-left is-align-items-center">
+          <img id="weather_image" class="image is-48x48 is-rounded" style="border-radius: 15px" /><span
+            id="weather_degree" class="pl-2"></span>
+        </div> -->
+        <!-- <div id="slide-number" class="custom-bottom-bg is-size-2 slide-number has-text-centered mt-1"></div> -->
+        <!-- <div class="custom-bottom-bg has-text-right">
+          <div id="current-time"></div>
+        </div> -->
+        <audio id="background-audio" autoplay loop>
+          <source id="audio-source" type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+      <!-- </div> -->
+    </div>
+  </div>
+
+  <style>
+    html,
+    body,
+    #slideshow {
+      height: 100%;
+    }
+
+    #app {
+      height: 100%;
+      width: 100%;
+      background-color: black;
+      /* color: white; */
+    }
+
+    #image_bar_left {
+      position: absolute;
+      left: 0;
+      top: 10px;
+      z-index: 1;
+    }
+
+    #image_bar_right {
+      position: absolute;
+      right: 0;
+      top: 0;
+      z-index: 1;
+    }
+
+    .overlay {
+      background-color: white;
+      width: 100%;
+    }
+
+    #bg-image {
+      opacity: 0.2;
+      height: 100%;
+      width: 100%;
+    }
+
+    #main-container {
+      /* border: 2px solid white; */
+      top: 5%;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+    }
+
+    #currentDate {
+      text-decoration: underline;
+    }
+
+    .table-container {
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      /* align-items: center; */
+      /* color: white; */
+    }
+
+    .slideshow-table {
+      width: 100%;
+      /* height: 50px; */
+      /* margin-top: 20px; */
+      background-color: rgba(0, 0, 0, 0);
+      padding: 10px;
+      border-radius: 15px;
+    }
+
+    th {
+      background-color: white;
+    }
+
+    tr:nth-child(odd) {
+      background: #AED9E6;
+    }
+
+    td {
+      padding: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 400px;
+    }
+
+    .bottom-container {
+      color: white;
+      /* background-color: rgba(0, 0, 0, 0.6); */
+      position: absolute;
+      bottom: 5px;
+      width: 100%;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #weather, #slide-number, #time {
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+      width: 120px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /*** custom classes I won't touch ***/
+
+    .custom-fixed-bottom {
+      /* left: 50%;
+    transform: translate(-50%, 0); */
+      margin-left: auto;
+      margin-right: auto;
+      bottom: 150px;
+      width: 80vw;
+      border-radius: 20px;
+      text-align: center;
+      background-color: #0b0b0b6a;
+    }
+
+    .custom-bottom-bg {
+      /* background-color:#1f1f1fdb ; */
+      padding: 5px 20px;
+      border-radius: 15px;
+    }
+
+    .custom-bg {
+      width: 100%;
+      /* height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white; */
+      background-color: #000000d3;
+    }
+
+    .has-text-orange {
+      color: orange;
+    }
+
+    .table-header-border-color {
+      border-bottom: 1px solid #805831;
+    }
+
+
+    .is-size-big {
+      font-size: 3.8rem;
+    }
+
+    .slide-images {
+      width: 100vw;
+      max-width: 100vw;
+      height: 100vh;
+    }
+  </style>
+
+  <script>
+    $(window).on("load", function () {
+      // Page has fully loaded, hide the loading overlay
+      $("#loading-overlay").fadeOut("slow");
+    });
+
+    // api call
+    $(document).ready(function () {
+      // base_url
+      var base_url = "https://api-v2.independa.com/";
+
+      // api call for device id
+      var device_token_url = base_url + "users/device-token";
+
+      // harcoded device_uid for test phase
+      // var queryParams = {
+      //   // for zero events
+      //   // device_uid: "MS0206017360394",
+      //   // for multiple events
+      //   device_uid: "MS0206017360076",
+      //   // for single event
+      //   // device_uid:"MS0206020500207 "
+      // };
+
+      // Getting the device_uid from the URL
+
+      function getQueryParams(url) {
+        var queryParams = {};
+        var parts = url.slice(url.indexOf("?") + 1).split("&");
+
+        for (var i = 0; i < parts.length; i++) {
+          var param = parts[i].split("=");
+          var key = decodeURIComponent(param[0]);
+          var value = decodeURIComponent(param[1]);
+
+          queryParams[key] = value;
+        }
+
+        return queryParams;
+      }
+
+      // Get the device_uid from the URL
+      var queryParams = getQueryParams(window.location.href);
+      var device_uid = queryParams["device_id"];
+
+      // Check if device_uid is not null or undefined
+      if (device_uid) {
+        displaydata();
+      } else {
+        console.log("device_uid not present in the URL");
+        $("#image_bar_left").remove();
+        $("#image_bar_right").remove();
+      }
+
+      // functions
+
+      function displaydata() {
+        // Use device_uid in your code
+        console.log("device_uid:", device_uid);
+        queryParams.device_uid = device_uid;
+
+        $.get(device_token_url, queryParams, function (output) {
+          console.log(output);
+          var headers = {
+            token: output.token,
+          };
+
+          $.ajax({
+            url: base_url + "users/device/digital-signage",
+            crossDomain: true,
+            method: "GET",
+            data: queryParams,
+            headers: headers,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data, status, xhr) {
+              console.log(data);
+              console.log(data.group_id);
+              console.log(data.location_id);
+              console.log(data.is_digital_signage);
+              console.log(data.is_activated);
+              // screensaver or not, false = screensaver
+              if (
+                data.is_digital_signage == true &&
+                data.is_activated == true
+              ) {
+                var canvas = $("#myCanvas");
+                canvas.remove();
+
+                var queryParams_device = {
+                  group: data.group_id,
+                  location: data.location_id,
+                  device_uid: data.device_uid,
+                };
+
+                updateAudioSource();
+                display_inner_data();
+              } else {
+                // Get the canvas element by its ID
+                var canvas = document.getElementById("myCanvas");
+                $("#image_bar_left").remove();
+                $("#image_bar_right").remove();
+                // bottom bar
+                $("#status_bar").remove();
+
+                if (canvas && canvas.getContext) {
+                  canvas_data();
+                } else {
+                  console.log(
+                    "Canvas element or getContext method not supported."
+                  );
+                }
+                function canvas_data() {
+                  // Check if the getContext method is available
+                  var ctx = canvas.getContext("2d");
+                  var animationIntervalId; // Declare animationIntervalId variable
+
+                  // Rest of your animation code here
+                  var stepX = 4;
+                  var stepY = -4;
+                  var size_x = canvas.width / 6;
+                  var size_y = canvas.height - 900;
+                  var anim_img = new Image();
+                  anim_img.src =
+                    "https://independa.s3.amazonaws.com/independa-static/media/image/png/2023-09/ec0c5bed4a5a5f4cbb5f73525bda448f75f37ef62707efc21f27e58069bdc06b.png";
+                  var x_icon = Math.random() * (canvas.width - size_x);
+                  var y_icon = Math.random() * (canvas.height - size_y);
+
+                  function draw() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(anim_img, x_icon, y_icon, size_x, size_y);
+                  }
+
+                  function myAnimation() {
+                    x_icon += stepX;
+                    y_icon += stepY;
+
+                    if (x_icon < 0 || x_icon + size_x > canvas.width) {
+                      stepX = -stepX;
+                    }
+
+                    if (y_icon < 0 || y_icon + size_y > canvas.height) {
+                      stepY = -stepY;
+                    }
+
+                    draw();
+                  }
+
+                  animationIntervalId = setInterval(myAnimation, 20); // Assign a value to animationIntervalId
+                }
+              }
+              function updateAudioSource() {
+                var audioUrl = data.audio_url;
+                console.log(audioUrl);
+                $("#audio-source").attr("src", audioUrl);
+                $("#background-audio")[0].load();
+              }
+              function display_inner_data() {
+                $.ajax({
+                  url: base_url + "medias/device/digital-signage-medias",
+                  crossDomain: true,
+                  method: "GET",
+                  data: queryParams_device,
+                  contentType: "application/json; charset=utf-8",
+                  dataType: "json",
+                  success: function (data_inner, status, xhr) {
+                    console.log(data_inner);
+                    function logos() {
+                      if (data_inner.calendar_settings.length > 0) {
+                        console.log(
+                          data_inner.calendar_settings[0].logo_image_url
+                        );
+                        var leftImageUrl =
+                          data_inner.calendar_settings[0].logo_image_url;
+                        // var leftImageUrl =
+                        //   "https://independa.s3.amazonaws.com/independa-static/media/image/png/2023-09/8e06f4ad05028669908b8ef95671fbec3eede5f219841c9d1287fcc62da6c4e1.png";
+
+                        var img_loc = $(
+                          "<img style='max-width: 300px; max-height: 300px'>"
+                        ).attr("src", leftImageUrl);
+                        $("#image_bar_left").empty().append(img_loc);
+
+                        var rightImageUrl =
+                          data_inner.calendar_settings[0].month_image_url;
+                        // var rightImageUrl =
+                        //   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhCnUiJnNShaf1arzyM9ZgIBuC6s28bBT70w&usqp=CAU";
+                        var img_mon = $(
+                          "<img style='border-radius: 0 0 0 20px; max-width: 100px; max-height: 100px'>"
+                        ).attr("src", rightImageUrl);
+                        $("#image_bar_right").empty().append(img_mon);
+                      } else {
+                        $("#image_bar_left").remove();
+                        $("#image_bar_right").remove();
+                        console.log("no calender_settings detected");
+                      }
+                    }
+                    // for the logos
+                    logos();
+                    // for tables
+
+                    var slideIndex = 0;
+                    var slideData = [];
+                    // dynamic slides
+                    if (data_inner.medias && data_inner.medias.length > 0) {
+                      for (var i = 0; i < data_inner.medias.length; i++) {
+                        if (
+                          data_inner.medias[i] &&
+                          data_inner.medias[i].url
+                        ) {
+                          slideData.push(data_inner.medias[i].url);
+                        }
+                      }
+                    }
+                    console.log(data_inner.events.length);
+                    if (data_inner.events.length > 0) {
+                      html_table_data();
+                    }
+                    function renderSlide(index) {
+                      var slideshow = $("#slideshow");
+                      slideshow.empty();
+
+                      if (index >= 0 && slideData.length) {
+                        displayTable();
+                      }
+                      function displayTable() {
+                        var slide = slideData[index];
+                        if (slide.type === "html") {
+                          insert_table_row();
+                        } else {
+                          // $("#image_bar_left").remove();
+                          // $("#image_bar_right").remove();
+                          var img = $("<img class='slide-images'>").attr(
+                            "src",
+                            slide
+                          );
+                          slideshow.append(img);
+                        }
+
+                        function insert_table_row() {
+                          slideshow.append(slide.content);
+                          $(".slideshow-table th").addClass(
+                            "is-size-2 table-header-border-color"
+                          );
+
+                          var tableBody = $("#table-body");
+
+                          // Clear existing rows
+                          tableBody.empty();
+
+                          // Loop through the event data and create table rows
+                          var sortedEventsByDate = data_inner.events.sort(function (a, b){ return new Date(a.date) - new Date(b.date)});
+                          sortedEventsByDate.forEach(function (event) {
+                            var row = $("<tr>");
+                            row.addClass("is-size-3");
+                            row.append($("<td>").text(event.event_time));
+                            row.append($("<td>").text(event.title));
+                            row.append($("<td>").text(event.location));
+
+                            tableBody.append(row);
+                          });
+                        }
+
+                        // slide number
+                        $("#slide-number").text(
+                          index + 1 + "/" + slideData.length
+                        );
+                      }
+                    }
+
+                    function showNextSlide() {
+                      if (data_inner.medias.length > 0) {
+                        slideIndex += 1;
+                        if (slideIndex >= slideData.length) {
+                          slideIndex = 0;
+                        }
+                        renderSlide(slideIndex);
+
+                        // Update the date immediately after changing the slide
+                        updateAndStoreDate();
+                      }
+                    }
+
+                    renderSlide(slideIndex);
+
+                    // Set interval for changing slides
+                    setInterval(showNextSlide, 3000);
+
+                    // console.log('hi');
+
+                    function html_table_data() {
+                      slideData.push({
+                        type: "html",
+                        content:
+                          '<div class="overlay">' +
+                          // '<img id="bg-image" class="is-fullheight" src= "https://independa.s3.amazonaws.com/independa-static/media/image/jpeg/2023-09/f2a2602a85c2fabb93fe205fec2a3696be9ec06e435c8e570fd5c46db3bb168f.jpg"/>' +
+                          '   <div id="main-container">' +
+                          // '       <div class="columns has-text-weight-bold is-size-big has-text-white is-relative is-justify-content-center">' +
+                          // '       <div class="has-text-weight-bold is-size-2 has-text-white">' +
+                          // '           <div class="column p-0 has-text-left" id="imageDiv"></div>' +
+                          // '           <div class="has-text-centered">Today\'s Activities</div>' +
+                          // '           <div class="column p-0 has-text-right" id="currentDate"></div>' +
+                          // "       </div>" +
+                          '           <div id="currentDate" class="has-text-centered is-size-2 has-text-weight-light"></div>' +
+                          '       <div class="table-container p-5">' +
+                          ' <table id="styled-table" class="slideshow-table">' +
+                          ' <thead class="" >' +
+                          "<tr class='py-5 has-text-left table-header-border-color is-size-2'>" +
+                          "<th>Time</th>" +
+                          "<th>Event Name</th>" +
+                          "<th>Location</th>" +
+                          "</tr>" +
+                          "</thead>" +
+                          '<tbody id="table-body" class="is-size-1">' +
+                          "</tbody>" +
+                          "</table>" +
+                          "       </div>" +
+                          "   </div>" +
+                          "</div>",
+                      });
+                    }
+                  },
+                });
+              }
+            },
+            error: function (xhr, status, error) {
+              console.log(xhr.responseText);
+              console.log(error);
+              console.log(status);
+            },
+          });
+        });
+      }
+
+      // dynamic audio
+
+      // code after getting device_uid place it in line number 142 after if(device_uid)
+      // for audio
+
+      // time
+      function updateCurrentTime() {
+        var currentTime = dayjs().format("h:mm A");
+        var currentDay = dayjs().format("dddd");
+
+        $("#current-time").text(currentTime);
+        $("#currentDay").text(currentDay);
+      }
+
+      updateCurrentTime();
+      setInterval(updateCurrentTime, 1000);
+
+      // setInterval(updateCurrentDate,1000)
+      // Weather API
+
+      var weatherAPIKey = "cc78d71bff884253a0e200608171206";
+
+      function getWeather() {
+        // Check if weather data is already in cache
+        var cachedData = localStorage.getItem("weatherData");
+        // var currentTime = new Date().getTime();
+        // console.log(currentTime);
+
+        var currentTime = dayjs().valueOf(); // Get current time using dayjs
+        console.log(currentTime);
+
+        if (cachedData) {
+          var cachedTime = parseInt(localStorage.getItem("weatherDataTime"));
+          if (currentTime - cachedTime < 900000) {
+            var data = JSON.parse(cachedData);
+            updateWeatherUI(data);
+            return;
+          }
+        }
+
+        console.log("inside weather");
+        try {
+          $.ajax({
+            url: "https://api.worldweatheronline.com//premium/v1/weather.ashx?q=${zipCode.value}&format=json&num_of_days=0&tp=3",
+            crossDomain: true,
+            method: "GET",
+            contentType: "application/json; charset=utf-8",
+            data: {
+              key: weatherAPIKey,
+              q: 92018,
+            },
+            success: function (data) {
+              console.log(data);
+              updateWeatherUI(data);
+
+              // Cache the data and current time
+              localStorage.setItem("weatherData", JSON.stringify(data));
+              localStorage.setItem("weatherDataTime", currentTime);
+            },
+            error: function (err) {
+              console.log("Cannot get weather", err);
+            },
+          });
+        } catch (err) {
+          console.log("Error:", err);
+        }
+      }
+      // Function to update the UI with weather data
+      function updateWeatherUI(data) {
+        $("#weather_image").attr(
+          "src",
+          data.data.current_condition[0].weatherIconUrl[0].value
+        );
+        $("#weather_degree").text(
+          data.data.current_condition[0].temp_F + "°F"
+        );
+      }
+
+      // Call getWeather initially
+      getWeather();
+
+      // Set up a timer to refresh weather data every 15 minutes
+      setInterval(getWeather, 900000); // 900,000 milliseconds = 15 minutes
+
+      // Function to reload the page after 5 minutes
+      function reloadPage() {
+        window.location.reload();
+      }
+
+      // Schedule a page reload after 5 minutes
+      setTimeout(reloadPage, 300000);
+
+      // Function to update the current date and store it in localStorage
+      // function updateAndStoreDate() {
+      //   try {
+      //     var currentDate = dayjs().format("dddd, MMMM DD, YYYY");
+      //     $("#currentDate").text(currentDate);
+
+      //     // Store the current date in localStorage
+      //     localStorage.setItem("currentDate", currentDate);
+      //   } catch (error) {
+      //     console.error("Error updating and storing current date:", error);
+      //   }
+      // }
+
+      // Function to update the current date and store it in localStorage
+      // function updateAndStoreDate() {
+      //   try {
+      //     var currentDate = dayjs().format("dddd, MMMM DD, YYYY");
+      //     $("#currentDate").text(currentDate);
+
+      //     // Store the current date in localStorage
+      //     localStorage.setItem("currentDate", currentDate);
+      //   } catch (error) {
+      //     console.error("Error updating and storing current date:", error);
+      //   }
+      // }
+
+      // Function to retrieve and display the stored date from localStorage
+      function updateAndStoreDate() {
+        try {
+          var currentDate = dayjs().format("dddd, MMMM DD, YYYY");
+          $("#currentDate").text(currentDate);
+
+          // Store the current date in localStorage
+          localStorage.setItem("currentDate", currentDate);
+        } catch (error) {
+          console.error("Error updating and storing current date:", error);
+        }
+      }
+
+      // Function to retrieve and display the stored date from localStorage
+      function displayStoredDate() {
+        var storedDate = localStorage.getItem("currentDate");
+        if (storedDate) {
+          $("#currentDate").text(storedDate);
+        } else {
+          // If stored date is not available, update and store immediately
+          updateAndStoreDate();
+        }
+      }
+
+      // Initial display of the stored date
+      displayStoredDate();
+
+      // Update the date and store it in localStorage every 1 minute
+      setInterval(function () {
+        updateAndStoreDate();
+      }, 600); // 60,000 milliseconds = 1 minute
+    });
+  </script>
+  <script></script>
+</body>
+
+</html>

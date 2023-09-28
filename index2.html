@@ -6,6 +6,7 @@
 
     <title>Digital Signage - Independa</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.6/dayjs.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://momentjs.com/downloads/moment-timezone-with-data.min.js"></script>
 
@@ -17,19 +18,6 @@
 
   <body class="no-scrollbar">
     <div id="app">
-      <div
-        id="continued-text"
-        class="is-size-1-fullhd is-size-3"
-        style="
-          padding-left: 20px;
-          padding-right: 20px;
-          position: absolute;
-          bottom: 1%;
-          right: 11%;
-          color: rgb(12, 12, 12);
-          border-radius: 10px;
-        "
-      ></div>
       <div id="loading-overlay">
         <div class="loading_logo">
           <div>
@@ -51,44 +39,7 @@
         id="slideshow"
         class="title is-3 has-text-white is-flex is-justify-content-center m-0"
       ></ul>
-      <div
-        class="bottom-container"
-        style="width: 100%; position: absolute; left: 0; right: 0; bottom: 0"
-      >
-        <div
-          style="width: 100%"
-          id="status_bar"
-          class="px-5 pb-2 is-flex is-justify-content-space-between is-align-items-center has-text-white has-padding-0 m-0 is-size-2 has-text-weight-normal"
-        >
-          <div
-            style="background-color: #000000c1"
-            class="custom-bottom-bg weather is-flex is-justify-content-left is-align-items-center is-size-3-fullhd is-size-5"
-          >
-            <img
-              id="weather_image"
-              class="image is-48x48-fullhd is-24x24 is-rounded"
-              style="border-radius: 15px"
-            />
-            <span id="weather_degree" class="pl-2"></span>
-          </div>
-          <div
-            style="background-color: #000000c1"
-            id="slide-number"
-            class="custom-bottom-bg slide-number has-text-centered mt-1 is-size-4-fullhd is-size-6"
-          ></div>
-          <div
-            style="background-color: #000000c1"
-            class="custom-bottom-bg has-text-right is-size-3-fullhd is-size-5"
-          >
-            <div id="current-time"></div>
-          </div>
-          <audio id="background-audio" autoplay loop>
-            <!-- <source id="audio-source" type="audio/mpeg" /> -->
-            Your browser does not support the audio element.
-          </audio>
-        </div>
-      </div>
-      <!-- <div class="bottom-container">
+      <div class="bottom-container">
         <div
           id="status_bar"
           class="custom-fixed-bottom is-flex is-justify-content-space-between is-align-items-center has-text-white has-padding-0 m-0 is-size-2 has-text-weight-normal pb-2 px-2"
@@ -114,7 +65,7 @@
             Your browser does not support the audio element.
           </audio>
         </div>
-      </div> -->
+      </div>
     </div>
 
     <style>
@@ -178,34 +129,21 @@
 
       .slideshow-table {
         width: 100%;
-        /* height: 50px; */
-        /* margin-top: 20px; */
-        /* background-color: rgba(0, 0, 0, 0); */
-        /* padding: 10px; */
-        /* border-radius: 15px; */
+        height: 50px;
+        margin-top: 20px;
+        background-color: rgba(0, 0, 0, 0);
+        padding: 10px;
+        border-radius: 15px;
       }
 
       .bottom-container {
-        /* background-color: rgba(0, 0, 0, 0.6); */
+        background-color: rgba(0, 0, 0, 0.6);
         position: absolute;
         bottom: 5px;
         left: 10%;
         width: 80%;
         border-radius: 10px;
       }
-
-      th {
-        background-color: white;
-      }
-
-      tr:nth-child(odd) {
-        background: #aed9e6;
-        /* border: 1px solid */
-      }
-
-      /* tr:nth-child(even) {
-        border: 1px solid
-      } */
 
       /*** custom classes I won't touch ***/
 
@@ -218,7 +156,7 @@
         width: 80vw;
         border-radius: 20px;
         text-align: center;
-        /* background-color: #0b0b0b6a; */
+        background-color: #0b0b0b6a;
       }
 
       .custom-bottom-bg {
@@ -259,26 +197,6 @@
       td {
         padding: 10px 0;
       }
-
-      .table-padding {
-        /* padding-top: 4rem;
-        padding-bottom: 4rem; */
-      }
-
-      @media (max-width: 1280px) {
-        .table-padding {
-          /* padding-top: 3rem; */
-          /* padding-bottom: 3rem; */
-        }
-      }
-
-      /* .slideshow-table tbody tr td { */
-      /* height: calc(100vh / 5); */
-      /* align-items: center; */
-      /* display: flex; */
-      /* align-items: center; Vertical centering */
-      /* justify-content: center;  */
-      /* } */
     </style>
 
     <script>
@@ -295,10 +213,6 @@
 
         // api call for device id
         var device_token_url = base_url + "users/device-token";
-
-        var allEvents = [];
-
-        var splicedEvents = [];
 
         // harcoded device_uid for test phase
         // var queryParams = {
@@ -381,13 +295,11 @@
                     device_uid: data.device_uid,
                   };
 
-                  // updateAudioSource();
-                  console.log(data.audio_url);
-                  $("#background-audio").attr("src", data.audio_url);
+                  updateAudioSource();
                   display_inner_data();
                 } else {
                   // Get the canvas element by its ID
-                  canvas = document.getElementById("myCanvas");
+                  var canvas = document.getElementById("myCanvas");
                   $("#image_bar_left").remove();
                   $("#image_bar_right").remove();
                   // bottom bar
@@ -439,6 +351,12 @@
                     animationIntervalId = setInterval(myAnimation, 20); // Assign a value to animationIntervalId
                   }
                 }
+                function updateAudioSource() {
+                  var audioUrl = data.audio_url;
+                  console.log(audioUrl);
+                  $("#audio-source").attr("src", audioUrl);
+                  $("#background-audio")[0].load();
+                }
                 function display_inner_data() {
                   $.ajax({
                     url: base_url + "medias/device/digital-signage-medias",
@@ -448,16 +366,7 @@
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (data_inner, status, xhr) {
-                      allEvents = data_inner.events;
-                      localStorage.setItem(
-                        "storedEvents",
-                        JSON.stringify(data_inner.events)
-                      );
-
-                      console.log(
-                        "allEvents",
-                        JSON.parse(localStorage.storedEvents)
-                      );
+                      console.log(data_inner);
                       function logos() {
                         if (data_inner.calendar_settings.length > 0) {
                           console.log(
@@ -472,8 +381,9 @@
 
                           var rightImageUrl =
                             data_inner.calendar_settings[0].month_image_url;
-                          var img_mon = $().attr("src", rightImageUrl);
-                          // "<img style='border-radius: 0 0 0 20px; max-width: 100px; max-height: 100px'>"
+                          var img_mon = $(
+                            // "<img style='border-radius: 0 0 0 20px; max-width: 100px; max-height: 100px'>"
+                          ).attr("src", rightImageUrl);
                           $("#image_bar_right").empty().append(img_mon);
                         } else {
                           $("#image_bar_left").remove();
@@ -486,36 +396,21 @@
                       // for tables
 
                       var slideIndex = 0;
-                      // var slideIndex = 13
+                      // var slideIndex = 15
                       var slideData = [];
                       // dynamic slides
                       if (data_inner.medias && data_inner.medias.length > 0) {
                         for (var i = 0; i < data_inner.medias.length; i++) {
-                          if (
-                            data_inner.medias[i] &&
-                            data_inner.medias[i].url
-                          ) {
+                          if ( data_inner.medias[i] && data_inner.medias[i].url ) {
                             slideData.push(data_inner.medias[i].url);
                           }
                         }
                       }
                       // console.log(data_inner.events.length);
                       if (data_inner.events.length > 0) {
-                        // console.log('data_inner.events', data_inner.events);
-                        if (data_inner.events.length > 10) {
-                          for (var j = 0; j < 2; j += 1) {
-                            html_table_data();
-                          }
-                        } else {
-                          html_table_data();
-                          document.getElementById("continued-text").innerText =
-                            "";
-                        }
+                        // html_table_data();
                       }
-
                       function renderSlide(index) {
-                        // newData = data_inner.events.slice(0)
-                        // console.log('storedEvents', JSON.parse(localStorage.getItem('storedEvents')));
                         var slideshow = $("#slideshow");
                         slideshow.empty();
                         if (index >= 0 && slideData.length) {
@@ -525,21 +420,21 @@
                           // console.log('index', index);
                           var slide = slideData[index];
                           // console.log('data_inner', data_inner.medias);
-                          if (slide.type === "html") {
-                            insert_table_row();
-                          } else {
+                          // if (slide.type === "html") {
+                          //   insert_table_row();
+                          // } else {
                             if (data_inner.medias[index].type === "photo") {
                               var img = $("<img class='slide-images'>").attr(
                                 "src",
                                 slide
                               );
                               slideshow.append(img);
-                            } else if (
-                              data_inner.medias[index].type === "document"
-                            ) {
+                            } 
+                            else 
+                            if (data_inner.medias[index].type === "document") {
                               // google slide
 
-                              // var slide_test = 'https://docs.google.com/presentation/d/e/2PACX-1vTpkkn0yFgGZCurkVeNnnNfpMQbEsVqmMWRsrFLtMYh5PTckAJKtOtRXJzJM714YkiKq4nNCqdY9o_D/embed?start=true&loop=false&delayms=3000'
+                              slide_test = 'https://docs.google.com/presentation/d/e/2PACX-1vTpkkn0yFgGZCurkVeNnnNfpMQbEsVqmMWRsrFLtMYh5PTckAJKtOtRXJzJM714YkiKq4nNCqdY9o_D/embed?start=true&loop=false&delayms=3000'
 
                               // var slideWithParam = slide + '&rm=minimal';
                               var slideWithParam = slide + "?rm=minimal";
@@ -548,18 +443,17 @@
                                 '<iframe width="100%" height="100%" frameborder="0"  allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>'
                               ).attr("src", slideWithParam);
                               slideshow.append(doc);
-                            } else {
-                              var unsupported_content_message = $(
-                                "<p> Unsupported media content <p/>"
-                              );
-                              slideshow.append(unsupported_content_message);
                             }
-                          }
+                            else{
+                              var unsupported_content_message = $('<p> Unsupported media content <p/>');
+                                slideshow.append(unsupported_content_message)
+                            }
+                          // }
 
                           function insert_table_row() {
                             slideshow.append(slide.content);
                             $(".slideshow-table th").addClass(
-                              "is-size-2-fullhd is-size-4 has-text-white table-header-border-color"
+                              "is-size-1 has-text-white table-header-border-color"
                             );
 
                             var tableBody = $("#table-body");
@@ -568,89 +462,15 @@
                             tableBody.empty();
 
                             // Loop through the event data and create table rows
-                            if (allEvents.length > 10) {
-                              document.getElementById(
-                                "continued-text"
-                              ).innerText += "Continued...";
-                              splicedEvents = allEvents.splice(0, 10);
-                              splicedEvents.forEach(function (event) {
-                                var row = $("<tr>");
-                                // row.addClass("is-size-2");
-                                row.append(
-                                  $(
-                                    "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3 has-text-weight-normal'>"
-                                  ).text(event.event_time)
-                                );
-                                row.append(
-                                  $(
-                                    "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3'>"
-                                  ).text(event.title)
-                                );
-                                row.append(
-                                  $(
-                                    "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3 has-text-weight-normal'>"
-                                  ).text(event.location)
-                                );
-                                tableBody.append(row);
-                              });
-                            } else {
-                              document.getElementById(
-                                "continued-text"
-                              ).innerText = "";
-                              allEvents.forEach(function (event) {
-                                var row = $("<tr>");
-                                row.append(
-                                  $(
-                                    "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3 is-size-4 has-text-weight-bold'>"
-                                  ).text(event.event_time)
-                                );
-                                row.append(
-                                  $(
-                                    "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3 is-size-4 has-text-weight-bold'>"
-                                  ).text(event.title)
-                                );
-                                row.append(
-                                  $(
-                                    "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3 is-size-4 has-text-weight-bold'>"
-                                  ).text(event.location)
-                                );
-                                tableBody.append(row);
-                              });
+                            data_inner.events.forEach(function (event) {
+                              var row = $("<tr>");
+                              // row.addClass("is-size-2");
+                              row.append($("<td class='px-5 pt-4 has-text-weight-normal'>").text(event.event_time));
+                              row.append($("<td class='px-5 pt-4'>").text(event.title));
+                              row.append($("<td class='px-5 pt-4 has-text-weight-normal'>").text(event.location));
 
-                              // Calculate the number of empty rows to add
-                              var numRowsToAdd = 10 - allEvents.length;
-                              // Add empty rows
-                              for (var i = 0; i < numRowsToAdd; i++) {
-                                var emptyRow = $(
-                                  "<tr style='background: #fff;'>"
-                                );
-                                emptyRow.append(
-                                  $(
-                                    "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3 has-text-weight-normal'>"
-                                  ).text("")
-                                );
-                                emptyRow.append(
-                                  $(
-                                    "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3'>"
-                                  ).text("")
-                                );
-                                emptyRow.append(
-                                  $(
-                                    "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3 has-text-weight-normal'>"
-                                  ).text("")
-                                );
-                                tableBody.append(emptyRow);
-                              }
-                              if (
-                                allEvents.length !==
-                                JSON.parse(localStorage.getItem("storedEvents"))
-                                  .length
-                              ) {
-                                allEvents = JSON.parse(
-                                  localStorage.getItem("storedEvents")
-                                );
-                              }
-                            }
+                              tableBody.append(row);
+                            });
                           }
 
                           // slide number
@@ -661,11 +481,7 @@
                       }
 
                       function showNextSlide() {
-                        if (
-                          data_inner.medias.length > 0 ||
-                          slideData.length > 1
-                        ) {
-                          console.log();
+                        if (data_inner.medias.length > 0) {
                           slideIndex += 1;
                           if (slideIndex >= slideData.length) {
                             slideIndex = 0;
@@ -680,30 +496,29 @@
                       renderSlide(slideIndex);
 
                       // Set interval for changing slides
-                      setInterval(showNextSlide, 15000);
+                      setInterval(showNextSlide, 5000);
 
                       function html_table_data() {
-                        // console.log('slideData',JSON.stringify(slideData));
                         slideData.push({
                           type: "html",
                           content:
-                            '<div class="overlay" style="background-color: white">' +
-                            // '<img id="bg-image" class="is-fullheight" src= "https://independa.s3.amazonaws.com/independa-static/media/image/jpeg/2023-09/f2a2602a85c2fabb93fe205fec2a3696be9ec06e435c8e570fd5c46db3bb168f.jpg"/>' +
+                            '<div class="overlay">' +
+                            '<img id="bg-image" class="is-fullheight" src= "https://independa.s3.amazonaws.com/independa-static/media/image/jpeg/2023-09/f2a2602a85c2fabb93fe205fec2a3696be9ec06e435c8e570fd5c46db3bb168f.jpg"/>' +
                             '   <div id="main-container" style="position: absolute; top: 0; margin-top: 1%">' +
-                            '       <div class="has-text-weight-bold is-size-2-fullhd is-size-4 has-text-black">' +
+                            '       <div class="has-text-weight-bold is-size-1 has-text-white">' +
                             '           <div class="has-text-centered">Today\'s Activities</div>' +
                             "       </div>" +
-                            '           <div id="currentDate" class="has-text-centered is-size-2-fullhd is-size-4 has-text-weight-light has-text-black"></div>' +
-                            '       <div class="p-5 table-container">' +
-                            ' <table id="styled-table" class="slideshow-table has-text-dark">' +
-                            ' <thead class="has-text-black" >' +
+                            '           <div style="margin-top: 5px" id="currentDate" class="has-text-centered is-size-2 has-text-weight-light"></div>' +
+                            '       <div class="table-container p-5">' +
+                            ' <table id="styled-table" class="slideshow-table has-text-white">' +
+                            ' <thead class="has-text-white" >' +
                             "<tr class='has-text-left table-header-border-color'>" +
-                            "<th style='width: 15%' class='px-5 pb-4 has-text-dark'>Time</th>" +
-                            "<th class='px-5 pb-4 has-text-dark'>Event Name</th>" +
-                            "<th style='width: 20%' class='px-5 pb-4 has-text-dark'>Location</th>" +
+                            "<th class='px-5 pb-4'>Time</th>" +
+                            "<th class='px-5 pb-4'>Event Name</th>" +
+                            "<th class='px-5 pb-4'>Location</th>" +
                             "</tr>" +
                             "</thead>" +
-                            '<tbody id="table-body" class="is-size-2-fullhd is-size-4">' +
+                            '<tbody id="table-body" class="is-size-1">' +
                             "</tbody>" +
                             "</table>" +
                             "       </div>" +
@@ -734,11 +549,8 @@
           // var currentTime = dayjs().format("h:mm A");
           // var currentDay = dayjs().format("dddd");
 
-          // var currentTime = moment().tz("America/Los_Angeles").format("h:mm A");
-          // var currentDay = moment().tz("America/Los_Angeles").format("dddd");
-
-          var currentTime = moment().tz(moment.tz.guess()).format("h:mm A");
-          var currentDay = moment().tz(moment.tz.guess()).format("dddd");
+          var currentTime = moment().tz('America/Los_Angeles').format("h:mm A")
+          var currentDay = moment().tz('America/Los_Angeles').format("dddd")
 
           $("#current-time").text(currentTime);
           $("#currentDay").text(currentDay);
@@ -760,9 +572,9 @@
 
           // var currentTime = dayjs().valueOf(); // Get current time using dayjs
           var currentTime = moment().valueOf(); // Get current time using dayjs
-          // console.log(currentTime);
+          console.log(currentTime);
 
-          if (JSON.parse(cachedData)) {
+          if (cachedData) {
             var cachedTime = parseInt(localStorage.getItem("weatherDataTime"));
             if (currentTime - cachedTime < 900000) {
               var data = JSON.parse(cachedData);
@@ -853,9 +665,7 @@
         function updateAndStoreDate() {
           try {
             // var currentDate = dayjs().format("dddd, MMMM DD, YYYY");
-            var currentDate = moment()
-              .tz("America/Los_Angeles")
-              .format("dddd, MMMM DD, YYYY");
+            var currentDate = moment().tz('America/Los_Angeles').format("dddd, MMMM DD, YYYY");
             $("#currentDate").text(currentDate);
 
             // Store the current date in localStorage
@@ -885,5 +695,6 @@
         }, 600); // 60,000 milliseconds = 1 minute
       });
     </script>
+    <script></script>
   </body>
 </html>

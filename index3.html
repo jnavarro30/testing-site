@@ -6,6 +6,7 @@
 
     <title>Digital Signage - Independa</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.6/dayjs.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://momentjs.com/downloads/moment-timezone-with-data.min.js"></script>
 
@@ -83,7 +84,7 @@
             <div id="current-time"></div>
           </div>
           <audio id="background-audio" autoplay loop>
-            <!-- <source id="audio-source" type="audio/mpeg" /> -->
+            <source id="audio-source" type="audio/mpeg" />
             Your browser does not support the audio element.
           </audio>
         </div>
@@ -381,9 +382,7 @@
                     device_uid: data.device_uid,
                   };
 
-                  // updateAudioSource();
-                  console.log(data.audio_url);
-                  $("#background-audio").attr("src", data.audio_url);
+                  updateAudioSource();
                   display_inner_data();
                 } else {
                   // Get the canvas element by its ID
@@ -438,6 +437,12 @@
 
                     animationIntervalId = setInterval(myAnimation, 20); // Assign a value to animationIntervalId
                   }
+                }
+                function updateAudioSource() {
+                  var audioUrl = data.audio_url;
+                  console.log(audioUrl);
+                  $("#audio-source").attr("src", audioUrl);
+                  $("#background-audio")[0].load();
                 }
                 function display_inner_data() {
                   $.ajax({
@@ -601,17 +606,17 @@
                                 var row = $("<tr>");
                                 row.append(
                                   $(
-                                    "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3 is-size-4 has-text-weight-bold'>"
+                                    "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3 has-text-weight-normal'>"
                                   ).text(event.event_time)
                                 );
                                 row.append(
                                   $(
-                                    "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3 is-size-4 has-text-weight-bold'>"
+                                    "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3'>"
                                   ).text(event.title)
                                 );
                                 row.append(
                                   $(
-                                    "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3 is-size-4 has-text-weight-bold'>"
+                                    "<td style='height: calc(98% / 10); vertical-align: middle;' class='px-5 py-3 has-text-weight-normal'>"
                                   ).text(event.location)
                                 );
                                 tableBody.append(row);
@@ -680,7 +685,7 @@
                       renderSlide(slideIndex);
 
                       // Set interval for changing slides
-                      setInterval(showNextSlide, 15000);
+                      setInterval(showNextSlide, 5000);
 
                       function html_table_data() {
                         // console.log('slideData',JSON.stringify(slideData));
@@ -734,11 +739,8 @@
           // var currentTime = dayjs().format("h:mm A");
           // var currentDay = dayjs().format("dddd");
 
-          // var currentTime = moment().tz("America/Los_Angeles").format("h:mm A");
-          // var currentDay = moment().tz("America/Los_Angeles").format("dddd");
-
-          var currentTime = moment().tz(moment.tz.guess()).format("h:mm A");
-          var currentDay = moment().tz(moment.tz.guess()).format("dddd");
+          var currentTime = moment().tz("America/Los_Angeles").format("h:mm A");
+          var currentDay = moment().tz("America/Los_Angeles").format("dddd");
 
           $("#current-time").text(currentTime);
           $("#currentDay").text(currentDay);
