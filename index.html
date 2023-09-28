@@ -159,7 +159,6 @@
         background: #aed9e6;
       }
 
-      /*** custom classes I won't touch ***/
       .custom-fixed-bottom {
         margin-left: auto;
         margin-right: auto;
@@ -568,7 +567,7 @@
           $("#currentDay").text(moment().tz(moment.tz.guess()).format("dddd"));
         }
 
-        // updateCurrentTime();
+        updateCurrentTime();
         setInterval(updateCurrentTime, 1000);
 
         var weatherAPIKey = "cc78d71bff884253a0e200608171206";
